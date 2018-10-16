@@ -123,16 +123,16 @@ public class Huffman_Algorithm {
         }
     }
     public static final String toHuffman(char[] source, HashMap<Character, String> huffmanTable ){
-        String s = "";
+        StringBuilder s = new StringBuilder();
         System.out.println(source);
         for (char c: source) {
             if (c == 0)
                 break;
             System.out.println(huffmanTable.get(c));
-            s += huffmanTable.get(c);
+            s.append(huffmanTable.get(c));
         }
         System.out.println(s);
-        return s;
+        return s.toString();
     }
 
     public static final String Decode(char[] source, Map<Character, Integer> freqTable, Map<Config_Interpreter.GRAMMAR, String> config, Map configOptions){
