@@ -2,8 +2,6 @@ import java.io.BufferedWriter;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
 import static com.sun.org.apache.xalan.internal.xsltc.compiler.sym.EOF;

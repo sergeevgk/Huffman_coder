@@ -1,10 +1,6 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
-/*import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.InputStreamReader;*/
-
 
 public class Config_Interpreter implements Config_Interpreter_Base{
     private final String OUTPUT_FILE = "output.txt";
