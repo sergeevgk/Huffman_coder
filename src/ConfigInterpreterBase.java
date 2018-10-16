@@ -3,10 +3,11 @@ import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface Config_Interpreter_Base {
+public interface ConfigInterpreterBase {
     //public enum Grammar{};
     //private static FileReader fileReader;
     //private static BufferedReader reader;
+    //не писать в интерфейсе public и abstract, это не нужно
     public abstract boolean ReadConfiguration(String fileName, Map config, Map configOptions, Map freqTable);
    /* public enum GRAMMAR {INPUT, OUTPUT, OPTIONS, FREQUENCY_TABLE,CODE_MODE, BUFFER_SIZE, HUFFMAN_TREE};
     public static final Map<String, GRAMMAR> grammarMap;

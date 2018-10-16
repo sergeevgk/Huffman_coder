@@ -8,28 +8,28 @@ import java.util.*;
 //(итератор простого класса, напр.), чтобы можно было разобраться где что внутри лежит
 //проверка: вход. файла, параметров, если всё ок, то пишет выходной файл
 //минимум 2 класса - main, алгоритм и интерпретатор
-public class Huffman_Coder {
-    private static Huffman_Algorithm algo = new Huffman_Algorithm();
+public class HuffmanCoder {
+    private static HuffmanAlgorithm algo = new HuffmanAlgorithm();
 
     public static void main(String[] args) throws IOException {
         if (args[0] != null) {
             Log.init();
-            Log.logReport("Program started.\n");
+            Log.LogReport("Program started.\n");
             String fileName = args[0];
             try {
                 algo.StartProcess(fileName);
             } catch (Exception e) {
                 if (e.getMessage().equals("Missing configuration file name.\n"))
-                    Log.logReport(e.getMessage());
+                    Log.LogReport(e.getMessage());
                 else {
-                    Log.logReport("Open file error.\n");
+                    Log.LogReport("Open file error.\n");
                 }
             }
             //log before exit to report about program's work
-            Log.logReport("Program finished.\n");
+            Log.LogReport("Program finished.\n");
             Log.close();
         } else {
-            Log.logReport("Missing command arguments.\n");
+            Log.LogReport("Missing command arguments.\n");
             Log.close();
         }
     }
