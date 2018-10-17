@@ -4,21 +4,21 @@ import java.util.*;
 public class HuffmanAlgorithm {
     private BufferedReader reader;
     private BufferedWriter writer;
-    private static Map<ConfigInterpreter.GRAMMAR, String> config = new EnumMap<>(ConfigInterpreter.GRAMMAR.class);
-    private Map<ConfigInterpreterOptions.GRAMMAR, String> configOptions = new EnumMap<>(ConfigInterpreterOptions.GRAMMAR.class);
+    private static Map<ConfigInterpreterMain.grammar, String> config = new EnumMap<>(ConfigInterpreterMain.grammar.class);
+    private Map<ConfigInterpreterOptions.grammar, String> configOptions = new EnumMap<>(ConfigInterpreterOptions.grammar.class);
     private Map<Character, Integer> freqTable = new HashMap<>();
-    private static ConfigInterpreter interpConfig = new ConfigInterpreter();
+    private static ConfigInterpreterMain interpConfig = new ConfigInterpreterMain();
 
-    public final void StartProcess(String fileName) throws Exception {
-        if (interpConfig.ReadConfiguration(fileName, config, configOptions, freqTable)) {//open config file to read coder options
-            ProcessFile(config, configOptions, freqTable);
+    public final void startProcess(String fileName) throws Exception {
+        if (interpConfig.readConfiguration(fileName, config, configOptions, freqTable)) {//open config file to read coder options
+            processFile(config, configOptions, freqTable);
         } else {
             Exception e = new Exception("Missing configuration file name.\n");
             throw e;
         }
     }
 
-    private final boolean OpenFile(String fileName, String mode) {
+    private final boolean openFile(String fileName, String mode) {
         try {
             switch (mode) {
                 case "r":
@@ -31,48 +31,48 @@ public class HuffmanAlgorithm {
                     writer = new BufferedWriter(new OutputStreamWriter(outstream));
                     break;
                 default:
-                    Log.LogReport("Open file error.");
+                    Log.logReport("Open file error.");
                     return false;
             }
         } catch (Exception e) {
-            Log.LogReport("Open file error.");
+            Log.logReport("Open file error.");
             return false;
         }
         return true;
     }
 
-    private final void ProcessFile(Map<ConfigInterpreter.GRAMMAR, String> config, Map<ConfigInterpreterOptions.GRAMMAR, String> configOptions, Map<Character, Integer> freqTable) throws IOException {
-        int bufSize = Integer.parseInt(configOptions.get(ConfigInterpreterOptions.GRAMMAR.BUFFER_SIZE));
+    private final void processFile(Map<ConfigInterpreterMain.grammar, String> config, Map<ConfigInterpreterOptions.grammar, String> configOptions, Map<Character, Integer> freqTable) throws IOException {
+        int bufSize = Integer.parseInt(configOptions.get(ConfigInterpreterOptions.grammar.BUFFER_SIZE));
         char[] buf = new char[bufSize];
-        String inputFileName = config.get(ConfigInterpreter.GRAMMAR.INPUT);
-        String outputFileName = config.get(ConfigInterpreter.GRAMMAR.OUTPUT);
-        if (!OpenFile(inputFileName, "r")) {
+        String inputFileName = config.get(ConfigInterpreterMain.grammar.INPUT);
+        String outputFileName = config.get(ConfigInterpreterMain.grammar.OUTPUT);
+        if (!openFile(inputFileName, "r")) {
             return;
         }
-        if (!OpenFile(outputFileName, "w")) {
+        if (!openFile(outputFileName, "w")) {
             return;
         }
-        int mode = Integer.parseInt(configOptions.get(ConfigInterpreterOptions.GRAMMAR.CODE_MODE));
+        int mode = Integer.parseInt(configOptions.get(ConfigInterpreterOptions.grammar.CODE_MODE));
         while ((reader.read(buf)) != -1) {
-            writer.write(ProcessCoder(buf, mode, freqTable, config, configOptions));
+            writer.write(processCoder(buf, mode, freqTable, config, configOptions));
             writer.flush();
         }
         reader.close();
         writer.close();
     }
 
-    private static final String ProcessCoder(char[] s, int mode, Map<Character, Integer> freqTable, Map<ConfigInterpreter.GRAMMAR, String> config, Map<ConfigInterpreterOptions.GRAMMAR, String> configOptions) {
+    private static final String processCoder(char[] s, int mode, Map<Character, Integer> freqTable, Map<ConfigInterpreterMain.grammar, String> config, Map<ConfigInterpreterOptions.grammar, String> configOptions) {
         switch (mode) {
             case 0:
                 //System.out.println(s);
-                return (Encode(s, freqTable, config, configOptions));
+                return (encode(s, freqTable, config, configOptions));
             case 1:
-                return (Decode(s, freqTable, config, configOptions));
+                return (decode(s, freqTable, config, configOptions));
         }
         return null;
     }
 
-    private static final String Encode(char[] source, Map<Character, Integer> freqTable, Map<ConfigInterpreter.GRAMMAR, String> config, Map<ConfigInterpreterOptions.GRAMMAR, String> configOptions) {
+    private static final String encode(char[] source, Map<Character, Integer> freqTable, Map<ConfigInterpreterMain.grammar, String> config, Map<ConfigInterpreterOptions.grammar, String> configOptions) {
         int i = 0;
         String s = "";
         //build priority queue
@@ -81,7 +81,7 @@ public class HuffmanAlgorithm {
         for (char c : keySet) {
             //System.out.println(freqTable.get(c).intValue());
             Node n = new Node(c, freqTable.get(c));
-            System.out.println(n.GetPriority());
+            System.out.println(n.getPriority());
             queue.add(n);
         }
         //build tree, save tree
@@ -89,37 +89,37 @@ public class HuffmanAlgorithm {
             queue.add(new Node(queue.poll(), queue.poll()));
         }
         Node tree = queue.poll(); // save to extra file
-        tree.WriteToFile(configOptions.get(ConfigInterpreterOptions.GRAMMAR.HUFFMAN_TREE));
+        tree.writeToFile(configOptions.get(ConfigInterpreterOptions.grammar.HUFFMAN_TREE));
         //build table sym-code, (!)save table
-        HashMap<Character, String> huffmanTable = BuildHuffmanTable(tree);
+        HashMap<Character, String> huffmanTable = buildHuffmanTable(tree);
         return toHuffman(source, huffmanTable);
     }
 
     private static Comparator<Node> nodeComparator = new Comparator<Node>() {
         @Override
         public int compare(Node o1, Node o2) {
-            return (int) (o1.GetPriority() - o2.GetPriority());
+            return (int) (o1.getPriority() - o2.getPriority());
         }
     };
 
-    private static final HashMap<Character, String> BuildHuffmanTable(Node tree) {
+    private static final HashMap<Character, String> buildHuffmanTable(Node tree) {
         HashMap<Character, String> map = new HashMap<>();
         //int i = 0;
         String s = "";
-        Traverse(tree, s, map);
+        traverse(tree, s, map);
         return map;
     }
 
-    private static final void Traverse(Node tree, String code, HashMap<Character, String> map) {
+    private static final void traverse(Node tree, String code, HashMap<Character, String> map) {
         if (tree.isLeaf()) {
             map.put(tree.character, code);
             return;
         }
         if (tree.left != null) {
-            Traverse(tree.left, code + "0", map);
+            traverse(tree.left, code + "0", map);
         }
         if (tree.right != null) {
-            Traverse(tree.right, code + "1", map);
+            traverse(tree.right, code + "1", map);
         }
     }
 
@@ -136,7 +136,7 @@ public class HuffmanAlgorithm {
         return s.toString();
     }
 
-    private static final String Decode(char[] source, Map<Character, Integer> freqTable, Map<ConfigInterpreter.GRAMMAR, String> config, Map configOptions) {
+    private static final String decode(char[] source, Map<Character, Integer> freqTable, Map<ConfigInterpreterMain.grammar, String> config, Map configOptions) {
         String s = "";
 
         //get tree form config/string

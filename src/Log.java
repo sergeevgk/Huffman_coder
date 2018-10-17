@@ -27,7 +27,7 @@ public class Log {
         }
     }
 
-    public static void LogReport(String s) {
+    public static void logReport(String s) {
         try {
             writer.write(s);
         } catch (IOException e) {

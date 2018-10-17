@@ -11,7 +11,7 @@ public class Node {
     char character;
     private int priority;
 
-    public int GetPriority() {
+    public int getPriority() {
         return priority;
     }
 
@@ -59,41 +59,32 @@ public class Node {
         return (this.left == null && this.right == null);
     }
 
-    public void WriteToFile(String fileName) {
+    public void writeToFile(String fileName) {
         try {
             FileWriter outstream = new FileWriter(fileName);
             BufferedWriter writer = new BufferedWriter(outstream);
             String s = "";
-            Dfs(this, s);
+            StringBuilder sBuilder = new StringBuilder(s);
+            dfs(this, sBuilder);
+            s = sBuilder.toString();
             writer.write(s);
             writer.flush();
             writer.close();
         } catch (IOException e) {
-            Log.LogReport("Error while writing huffman tree to file");
+            Log.logReport("Error while writing huffman tree to file");
         }
     }
 
-    private static void Dfs(Node n, String s) {
-        Stack<Node> st = new Stack<Node>();
-        // Map<Node, Boolean> visited = new HashMap<>();
-        st.push(n);
-        StringBuilder sBuilder = new StringBuilder(s);
-        while (!st.empty()) {
-            n = st.pop();
-            //    visited.putIfAbsent(n, true);
-            if (n.right != null) {
-                st.push(n.right);
-            }
-            if (n.left != null) {
-                st.push(n.left);
-            }
-            if (n.isLeaf()) {
-                sBuilder.append("1").append(n.character);
-            } else {
-                sBuilder.append("0");
-            }
+    private static void dfs(Node n, StringBuilder s) {
+        if (n == null)
+            return;
+        dfs(n.left, s);
+        if (n.isLeaf()) {
+            s.append("1").append(n.character);
+        } else {
+            s.append("0");
         }
-        s = sBuilder.toString();
+        dfs(n.right, s);
     }
 }
 
