@@ -3,10 +3,15 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.Map;
 
-public class ConfigInterpreterTable implements ConfigInterpreter {
+public class ConfigInterpreterTable implements ConfigInterpreter<Character, Integer> {
+    String fileName;
     private final String DELIMITER = "=";
-
-    public final boolean readConfiguration(String fileName, Map config, Map configOptions, Map freqTable) {
+    //@Override
+    public ConfigInterpreterTable(String fileName){
+        this.fileName = fileName;
+    }
+    @Override
+    public final void readConfiguration(Map <Character, Integer> freqTable) {
         String line;
         String[] set;
         int i = 0;
@@ -24,8 +29,9 @@ public class ConfigInterpreterTable implements ConfigInterpreter {
 
             }
         } catch (Exception e) {
-            return false;
+            Log.logReport("Error while reading configuration table file\n");
+            return;
         }
-        return true;
+        return;
     }
 }

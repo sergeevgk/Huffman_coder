@@ -1,6 +1,6 @@
 import java.util.Map;
 
-public interface ConfigInterpreter {
-    //не писать в интерфейсе public и abstract, это не нужно
-    public abstract boolean readConfiguration(String fileName, Map config, Map configOptions, Map freqTable);
+public interface ConfigInterpreter<T, Q> {
+    //ConfigInterpreter(String fileName);
+    void readConfiguration(Map<T, Q> configMap);
 }

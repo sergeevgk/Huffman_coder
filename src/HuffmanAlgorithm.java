@@ -4,7 +4,7 @@ import java.util.*;
 public class HuffmanAlgorithm {
     private BufferedReader reader;
     private BufferedWriter writer;
-    private static Map<ConfigInterpreterMain.grammar, String> config = new EnumMap<>(ConfigInterpreterMain.grammar.class);
+   /* private static Map<ConfigInterpreterMain.grammar, String> config = new EnumMap<>(ConfigInterpreterMain.grammar.class);
     private Map<ConfigInterpreterOptions.grammar, String> configOptions = new EnumMap<>(ConfigInterpreterOptions.grammar.class);
     private Map<Character, Integer> freqTable = new HashMap<>();
     private static ConfigInterpreterMain interpConfig = new ConfigInterpreterMain();
@@ -16,7 +16,7 @@ public class HuffmanAlgorithm {
             Exception e = new Exception("Missing configuration file name.\n");
             throw e;
         }
-    }
+    }*/
 
     private final boolean openFile(String fileName, String mode) {
         try {
