@@ -2,14 +2,16 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
-public class OptionsReader{
+public class OptionsReader {
     private String fileName;
-    public OptionsReader(String fileName){
+
+    public OptionsReader(String fileName) {
         this.fileName = fileName;
     }
-    public Options readOptions(){
-        Map<GrammarMain.grammar, String> configMain = new EnumMap<GrammarMain.grammar, String>(GrammarMain.grammar.class);
-        Map<GrammarOptions.grammar, String> configOptions = new EnumMap<GrammarOptions.grammar, String>(GrammarOptions.grammar.class);
+
+    public Options readOptions() {
+        Map<GrammarMain.Grammar, String> configMain = new EnumMap<GrammarMain.Grammar, String>(GrammarMain.Grammar.class);
+        Map<GrammarOptions.Grammar, String> configOptions = new EnumMap<GrammarOptions.Grammar, String>(GrammarOptions.Grammar.class);
         Map<Character, Integer> configTable = new HashMap<>();
         ConfigInterpreter interpreterMain = new ConfigInterpreterMain(fileName);
         ConfigInterpreter interpreterOptions = new ConfigInterpreterOptions(fileName);

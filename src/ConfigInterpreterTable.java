@@ -6,12 +6,14 @@ import java.util.Map;
 public class ConfigInterpreterTable implements ConfigInterpreter<Character, Integer> {
     String fileName;
     private final String DELIMITER = "=";
+
     //@Override
-    public ConfigInterpreterTable(String fileName){
+    public ConfigInterpreterTable(String fileName) {
         this.fileName = fileName;
     }
+
     @Override
-    public final void readConfiguration(Map <Character, Integer> freqTable) {
+    public final void readConfiguration(Map<Character, Integer> freqTable) {
         String line;
         String[] set;
         int i = 0;

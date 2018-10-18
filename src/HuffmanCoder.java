@@ -8,8 +8,16 @@ public class HuffmanCoder {
             String fileName = args[0];
             try {
                 OptionsReader optionsReader = new OptionsReader(fileName);
-                HuffmanAlgorithm algo = new HuffmanAlgorithm(optionsReader.readOptions());
-                algo.startProcess();
+                Options options = optionsReader.readOptions();
+                HuffmanAlgorithm algo = new HuffmanAlgorithm(options);
+                MyFileReader fileReader = new MyFileReader(options);
+                MyFileWriter fileWriter = new MyFileWriter(options);
+                char[] buffer;
+                while ((buffer = fileReader.readInputFile()) != null) {
+                    fileWriter.writeOutputFile(algo.startProcess(buffer, options));
+                }
+                fileWriter.close();
+                fileReader.close();
             } catch (Exception e) {
                 if (e.getMessage().equals("Missing configuration file name.\n"))
                     Log.logReport(e.getMessage());

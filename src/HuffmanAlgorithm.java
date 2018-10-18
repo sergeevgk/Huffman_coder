@@ -2,69 +2,22 @@ import java.io.*;
 import java.util.*;
 
 public class HuffmanAlgorithm {
-    private BufferedReader reader;
-    private BufferedWriter writer;
-    private static Map<GrammarMain.grammar, String> configMain;
-    private Map<GrammarOptions.grammar, String> configOptions;
+    private static Map<GrammarMain.Grammar, String> configMain;
+    private Map<GrammarOptions.Grammar, String> configOptions;
     private Map<Character, Integer> freqTable;
-    public HuffmanAlgorithm(Options options){
+
+    public HuffmanAlgorithm(Options options) {
         this.configMain = options.configMain;
         this.configOptions = options.configOptions;
         this.freqTable = options.configTable;
     }
-    public final void startProcess(){
-        try {
-            processFile();
-        }
-        catch (IOException e){
-            Log.logReport("?");
-        }
+
+    public final char[] startProcess(char[] source, Options options) {
+        Integer codeMode = Integer.parseInt(configOptions.get(GrammarOptions.Grammar.CODE_MODE));
+        return processCoder(source, codeMode);
     }
 
-    private final boolean openFile(String fileName, String mode) {
-        try {
-            switch (mode) {
-                case "r":
-                    FileInputStream inStream = new FileInputStream(fileName);
-                    reader = new BufferedReader(new InputStreamReader(inStream));
-                    break;
-
-                case "w":
-                    FileOutputStream outStream = new FileOutputStream(fileName);
-                    writer = new BufferedWriter(new OutputStreamWriter(outStream));
-                    break;
-                default:
-                    Log.logReport("Open file error.");
-                    return false;
-            }
-        } catch (Exception e) {
-            Log.logReport("Open file error.");
-            return false;
-        }
-        return true;
-    }
-
-    private final void processFile() throws IOException {
-        int bufSize = Integer.parseInt(configOptions.get(GrammarOptions.grammar.BUFFER_SIZE));
-        char[] buf = new char[bufSize];
-        String inputFileName = configMain.get(GrammarMain.grammar.INPUT);
-        String outputFileName = configMain.get(GrammarMain.grammar.OUTPUT);
-        if (!openFile(inputFileName, "r")) {
-            return;
-        }
-        if (!openFile(outputFileName, "w")) {
-            return;
-        }
-        int mode = Integer.parseInt(configOptions.get(GrammarOptions.grammar.CODE_MODE));
-        while ((reader.read(buf)) != -1) {
-            writer.write(processCoder(buf, mode));
-            writer.flush();
-        }
-        reader.close();
-        writer.close();
-    }
-
-    private  final String processCoder(char[] s, int mode) {
+    private final char[] processCoder(char[] s, int mode) {
         switch (mode) {
             case 0:
                 //System.out.println(s);
@@ -75,9 +28,8 @@ public class HuffmanAlgorithm {
         return null;
     }
 
-    private final String encode(char[] source) {
+    private final char[] encode(char[] source) {
         int i = 0;
-        String s = "";
         //build priority queue
         PriorityQueue<Node> queue = new PriorityQueue<>(nodeComparator);
         Set<Character> keySet = freqTable.keySet();
@@ -92,10 +44,10 @@ public class HuffmanAlgorithm {
             queue.add(new Node(queue.poll(), queue.poll()));
         }
         Node tree = queue.poll(); // save to extra file
-        tree.writeToFile(configOptions.get(GrammarOptions.grammar.HUFFMAN_TREE));
+        tree.writeToFile(configOptions.get(GrammarOptions.Grammar.HUFFMAN_TREE));
         //build table sym-code, (!)save table
         HashMap<Character, String> huffmanTable = buildHuffmanTable(tree);
-        return toHuffman(source, huffmanTable);
+        return toHuffman(source, huffmanTable).toCharArray();
     }
 
     private static Comparator<Node> nodeComparator = new Comparator<Node>() {
@@ -139,14 +91,14 @@ public class HuffmanAlgorithm {
         return s.toString();
     }
 
-    private final String decode(char[] source) {
-        String s = "";
+    private final char[] decode(char[] source) {
+        char[] buf;
 
         //get tree form config/string
         //build priority queue
         //build tree, save tree
         //build table sym-code, save table
         //toHuffman()
-        return s;
+        return source;
     }
 }
