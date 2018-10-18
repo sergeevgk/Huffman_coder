@@ -1,15 +1,15 @@
 import java.io.*;
 
 public class HuffmanCoder {
-    private static HuffmanAlgorithm algo = new HuffmanAlgorithm();
-
     public static void main(String[] args) throws IOException {
         if (args[0] != null) {
             Log.init();
             Log.logReport("Program started.\n");
             String fileName = args[0];
             try {
-                algo.startProcess(fileName);
+                OptionsReader optionsReader = new OptionsReader(fileName);
+                HuffmanAlgorithm algo = new HuffmanAlgorithm(optionsReader.readOptions());
+                algo.startProcess();
             } catch (Exception e) {
                 if (e.getMessage().equals("Missing configuration file name.\n"))
                     Log.logReport(e.getMessage());
