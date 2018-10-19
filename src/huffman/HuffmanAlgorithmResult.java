@@ -3,11 +3,11 @@ package huffman;
 import java.util.Map;
 
 public class HuffmanAlgorithmResult {
-    private char[] encodedSource;
+    private char[] result;
     private Map<Character, String> huffmanTree;
 
-    public HuffmanAlgorithmResult(char[] encodedSource, Map<Character, String> huffmanTree) {
-        this.encodedSource = encodedSource;
+    public HuffmanAlgorithmResult(char[] result, Map<Character, String> huffmanTree) {
+        this.result = result;
         this.huffmanTree = huffmanTree;
     }
 
@@ -15,7 +15,7 @@ public class HuffmanAlgorithmResult {
         return huffmanTree;
     }
 
-    public char[] getEncodedSource() {
-        return encodedSource;
+    public char[] getResult() {
+        return result;
     }
 }
