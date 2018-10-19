@@ -10,22 +10,11 @@ public class MyFileReader {
     private Integer bufferSize;
     private Integer codeMode;
 
-    static FileReader getInstance(){
-        return this;
-    }
-
-    public MyFileReader(BufferedReader reader){};
-    public MyFileReader instance(Options options) {
-        try {
+    public MyFileReader(Options options) throws IOException {
             FileInputStream inStream = new FileInputStream(options.configMain.get(GrammarMain.IN));
             this.reader = new BufferedReader(new InputStreamReader(inStream));
             this.bufferSize = Integer.parseInt(options.configOptions.get(GrammarOptions.BUFFER_SIZE));
             this.codeMode = Integer.parseInt(options.configOptions.get(GrammarOptions.CODE_MODE));
-            return new MyFileReader();
-        } catch (IOException e) {
-            Log.logReport("Opening input file stream error.\n");
-            return null;
-        }
     }
 
     public final char[] readInputFile() { //readToBuffer
@@ -34,7 +23,7 @@ public class MyFileReader {
             if (reader.read(buf) == -1)
                 return null;
         } catch (IOException e) {
-            Log.logReport("Reading input file error.\n");
+            Log.logReport("Reading input file error.");
             return null;
         }
         return buf;

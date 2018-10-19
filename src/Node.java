@@ -67,9 +67,7 @@ public class Node {
             FileWriter outstream = new FileWriter(fileName);
             BufferedWriter writer = new BufferedWriter(outstream);
             String s = "";
-            StringBuilder sBuilder = new StringBuilder(s);
-            dfs(this, sBuilder);
-            s = sBuilder.toString();
+            dfs(this, s);
             writer.write(s);
             writer.flush();
             writer.close();
@@ -78,14 +76,14 @@ public class Node {
         }
     }
 
-    private static void dfs(Node n, StringBuilder s) {
+    private static void dfs(Node n, String s) {
         if (n == null)
             return;
         dfs(n.left, s);
         if (n.isLeaf()) {
-            s.append("1").append(n.character);
+            s += "1";
         } else {
-            s.append("0");
+            s += "0";
         }
         dfs(n.right, s);
     }

@@ -13,7 +13,9 @@ public class Log {
         }
         return instance;
     }
+    private Log(){
 
+    }
     private static FileWriter writer;
 
     public static void init() {
@@ -27,7 +29,7 @@ public class Log {
 
     public static void logReport(String s) {
         try {
-            writer.write(s);
+            writer.write(s + System.lineSeparator());
         } catch (IOException e) {
             System.out.println("Cannot write to log file.");
             e.printStackTrace();

@@ -34,25 +34,25 @@ public class OptionsReader {
 
     private final void fillDefaultMain(Map<GrammarMain, String> configMain) {
         if (configMain.putIfAbsent(GrammarMain.IN, "input.txt") == null) {
-            Log.logReport("Missing input file. Using default one.\n");//она вообще выполнится хоть раз?
+            Log.logReport("Missing input file. Using default one.");
         }
-        if (configMain.putIfAbsent(GrammarMain.OUT, "output.txt") == null) {//она вообще выполнится хоть раз?
-            Log.logReport("Missing output file. Using default one.\n");
+        if (configMain.putIfAbsent(GrammarMain.OUT, "output.txt") == null) {
+            Log.logReport("Missing output file. Using default one.");
         }
         if (configMain.putIfAbsent(GrammarMain.OPTIONS, "options.txt") == null) {
-            Log.logReport("Missing options file. Using default one.\n");//она вообще выполнится хоть раз?
+            Log.logReport("Missing options file. Using default one.");
         }
     }
 
     private final void fillDefaultOptions(Map<GrammarOptions, String> configOptions) {
         if (configOptions.putIfAbsent(GrammarOptions.BUFFER_SIZE, "frequency.txt") == null) {
-            Log.logReport("Missing frequency table file. Using default one.\n");
+            Log.logReport("Missing frequency table file. Using default one.");
         }
         if (configOptions.putIfAbsent(GrammarOptions.FREQUENCY_TABLE, "frequency.txt") == null) {
-            Log.logReport("Missing frequency table file. Using default one.\n");
+            Log.logReport("Missing frequency table file. Using default one.");
         }
         if (configOptions.putIfAbsent(GrammarOptions.FREQUENCY_TABLE, "frequency.txt") == null) {
-            Log.logReport("Missing frequency table file. Using default one.\n");
+            Log.logReport("Missing frequency table file. Using default one.");
         }
 
     }
