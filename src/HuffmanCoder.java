@@ -2,10 +2,11 @@ import java.io.*;
 
 import config.Options;
 import config.OptionsReader;
+import huffman.HuffmanAlgorithm;
 import log.Log;
 
 public class HuffmanCoder {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args){
         if (args[0] != null) {
             Log.init();
             Log.logReport("Program started.");
@@ -19,11 +20,11 @@ public class HuffmanCoder {
                 MyFileWriter fileWriter = new MyFileWriter(options);
                 char[] buffer;
                 while ((buffer = fileReader.readInputFile()) != null) {
-                    fileWriter.writeOutputFile(algo.startProcess(buffer, options));
+                    fileWriter.writeOutputFile(algo.startProcess(buffer));
                 }
                 fileWriter.close();
                 fileReader.close();
-            } catch (Exception e) {
+            } catch (IOException e) {
                 if (e.getMessage().equals("Missing configuration file name."))
                     Log.logReport(e.getMessage());
                 else {

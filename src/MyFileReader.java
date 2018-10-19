@@ -8,19 +8,20 @@ import java.io.*;
 public class MyFileReader {
     private BufferedReader reader;
     private Integer bufferSize;
-    private Integer codeMode;
+    //private Integer codeMode;
 
     public MyFileReader(Options options) throws IOException {
             FileInputStream inStream = new FileInputStream(options.configMain.get(GrammarMain.IN));
             this.reader = new BufferedReader(new InputStreamReader(inStream));
             this.bufferSize = Integer.parseInt(options.configOptions.get(GrammarOptions.BUFFER_SIZE));
-            this.codeMode = Integer.parseInt(options.configOptions.get(GrammarOptions.CODE_MODE));
+            //this.codeMode = Integer.parseInt(options.configOptions.get(GrammarOptions.CODE_MODE));
     }
 
     public final char[] readInputFile() { //readToBuffer
         char[] buf = new char[bufferSize];
+        int size;
         try {
-            if (reader.read(buf) == -1)
+            if ((size = reader.read(buf)) == -1)
                 return null;
         } catch (IOException e) {
             Log.logReport("Reading input file error.");

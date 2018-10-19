@@ -12,7 +12,7 @@ public class HuffmanAlgorithm {
 
     public HuffmanAlgorithm(Options options) {
         this.configOptions = options.configOptions;
-        this.huffmanTree = options.huffmanTree;
+        this.huffmanTree = options.huffmanTable;
     }
 
     public HuffmanAlgorithmResult startProcess(char[] source) {
@@ -44,7 +44,6 @@ public class HuffmanAlgorithm {
 
     private HuffmanAlgorithmResult encode(char[] source) {
         Map<Character, Integer> frequencyTable = createFreqTable(source);
-
         Queue<Node> queue = new PriorityQueue<>();
         for (char c : frequencyTable.keySet()) {
             Node n = new Node(c, frequencyTable.get(c), null, null);
@@ -87,6 +86,8 @@ public class HuffmanAlgorithm {
     private String toHuffman(char[] source, Map<Character, String> huffmanTable) {
         StringBuilder s = new StringBuilder();
         for (char c : source) {
+            if (c == 0)
+                break;
             s.append(huffmanTable.get(c));
         }
         return s.toString();

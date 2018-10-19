@@ -16,7 +16,7 @@ public class OptionsReader {
     public Options readOptions() {
         Map<GrammarMain, String> configMain = new EnumMap<>(GrammarMain.class);
         Map<GrammarOptions, String> configOptions = new EnumMap<>(GrammarOptions.class);
-        Map<Character, String> huffmanTree = new HashMap<>();
+        Map<Character, String> huffmanTable = new HashMap<>();
 
         ConfigInterpreter<GrammarMain, String> interpreterMain = new ConfigInterpreterMain(fileName);
         interpreterMain.readConfiguration(configMain);
@@ -25,11 +25,11 @@ public class OptionsReader {
         ConfigInterpreter<GrammarOptions, String> interpreterOptions = new ConfigInterpreterOptions(configMain.get(GrammarMain.OPTIONS));
         interpreterOptions.readConfiguration(configOptions);
         fillDefaultOptions(configOptions);
-
-        ConfigInterpreter<Character, String> interpreterTable = new ConfigInterpreterHuffmanTree(configOptions.get(GrammarOptions.HUFFMAN_TREE));
-        interpreterTable.readConfiguration(huffmanTree);
-
-        return new Options(configMain, configOptions, huffmanTree);
+        if (configOptions.get(GrammarOptions.CODE_MODE).equals("1")) {
+            ConfigInterpreter<Character, String> interpreterTable = new ConfigInterpreterHuffmanTree(configOptions.get(GrammarOptions.HUFFMAN_TABLE));
+            interpreterTable.readConfiguration(huffmanTable);
+        }
+        return new Options(configMain, configOptions, huffmanTable);
     }
 
     private void fillDefaultMain(Map<GrammarMain, String> configMain) {
@@ -51,9 +51,9 @@ public class OptionsReader {
         if (configOptions.putIfAbsent(GrammarOptions.FREQUENCY_TABLE, "frequency.txt") == null) {
             Log.logReport("Missing frequency table file. Using default one.");
         }
-        if (configOptions.putIfAbsent(GrammarOptions.FREQUENCY_TABLE, "frequency.txt") == null) {
-            Log.logReport("Missing frequency table file. Using default one.");
-        }
+        /*if (configOptions.putIfAbsent(GrammarOptions.HUFFMAN_TABLE, "huffmanTable.txt") == null) {
+            Log.logReport("Missing huffman table file. Using default one.");
+        }*/
     }
 }
 

@@ -1,4 +1,4 @@
 FREQUENCY_TABLE=frequency.txt
 CODE_MODE=0
 BUFFER_SIZE=100
-HUFFMAN_TREE=h_tree.txt
+HUFFMAN_TABLE=h_tree.txt
