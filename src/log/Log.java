@@ -1,18 +1,16 @@
+package log;
+
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class Log {
     //make singleton for only 1 logger in program
-    private static volatile Log instance;
-
-    private Log() { };
+    private static Log instance;
 
     public static Log getInstance() {
-        if (instance == null)
-            synchronized (Log.class) {
-                if (instance == null)
-                    instance = new Log();
-            }
+        if (instance == null) {
+            instance = new Log();
+        }
         return instance;
     }
 
@@ -22,7 +20,7 @@ public class Log {
         try {
             writer = new FileWriter("log.log");//mb put into config file
         } catch (IOException e) {
-            System.out.print("Cannot create or open log file.\n");
+            System.out.println("Cannot create or open log file.");
             e.printStackTrace();
         }
     }
@@ -31,15 +29,19 @@ public class Log {
         try {
             writer.write(s);
         } catch (IOException e) {
-            System.out.print("Cannot write to log file.\n");
+            System.out.println("Cannot write to log file.");
             e.printStackTrace();
-            return;
         }
-        return;
     }
 
-    public static void close() throws IOException {
-        writer.flush();
-        writer.close();
+    public static void close() {
+        try {
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Cannot close log file");
+            e.printStackTrace();
+        }
+
     }
 }
