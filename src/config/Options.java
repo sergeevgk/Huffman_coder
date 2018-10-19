@@ -1,11 +1,14 @@
+package config;
+
 import java.util.Map;
 
 public class Options {
-    public Map<GrammarMain.Grammar, String> configMain;
-    public Map<GrammarOptions.Grammar, String> configOptions;
+    public Map<GrammarMain, String> configMain;
+    public Map<GrammarOptions, String> configOptions;
     public Map<Character, Integer> configTable;
 
-    public Options(Map<GrammarMain.Grammar, String> configMain, Map<GrammarOptions.Grammar, String> configOptions,
+    public Options(Map<GrammarMain, String> configMain,
+                   Map<GrammarOptions, String> configOptions,
                    Map<Character, Integer> configTable) {
         this.configMain = configMain;
         this.configOptions = configOptions;

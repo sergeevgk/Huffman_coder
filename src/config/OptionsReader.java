@@ -1,3 +1,5 @@
+package config;
+
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,15 +12,18 @@ public class OptionsReader {
     }
 
     public Options readOptions() {
-        Map<GrammarMain.Grammar, String> configMain = new EnumMap<GrammarMain.Grammar, String>(GrammarMain.Grammar.class);
-        Map<GrammarOptions.Grammar, String> configOptions = new EnumMap<GrammarOptions.Grammar, String>(GrammarOptions.Grammar.class);
+        Map<GrammarMain, String> configMain = new EnumMap<>(GrammarMain.class);
+        Map<GrammarOptions, String> configOptions = new EnumMap<>(GrammarOptions.class);
         Map<Character, Integer> configTable = new HashMap<>();
-        ConfigInterpreter interpreterMain = new ConfigInterpreterMain(fileName);
-        ConfigInterpreter interpreterOptions = new ConfigInterpreterOptions(fileName);
-        ConfigInterpreter interpreterTable = new ConfigInterpreterTable(fileName);
+
+        ConfigInterpreter<GrammarMain, String> interpreterMain = new ConfigInterpreterMain(fileName);
+        ConfigInterpreter<GrammarOptions, String> interpreterOptions = new ConfigInterpreterOptions(fileName);
+        ConfigInterpreter<Character, Integer> interpreterTable = new ConfigInterpreterTable(fileName);
+
         interpreterMain.readConfiguration(configMain);
         interpreterOptions.readConfiguration(configOptions);
         interpreterTable.readConfiguration(configTable);
+
         return new Options(configMain, configOptions, configTable);
     }
 }
