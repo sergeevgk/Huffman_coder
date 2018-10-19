@@ -1,19 +1,26 @@
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import config.GrammarMain;
+import config.GrammarOptions;
+import config.Options;
+import log.Log;
+
+import java.io.*;
 
 public class MyFileReader {
     private BufferedReader reader;
     private Integer bufferSize;
     private Integer codeMode;
 
+    static FileReader getInstance(){
+        return this;
+    }
+
+    public MyFileReader(BufferedReader reader){};
     public MyFileReader instance(Options options) {
         try {
-            FileInputStream inStream = new FileInputStream(options.configMain.get(GrammarMain.Grammar.INPUT));
+            FileInputStream inStream = new FileInputStream(options.configMain.get(GrammarMain.IN));
             this.reader = new BufferedReader(new InputStreamReader(inStream));
-            this.bufferSize = Integer.parseInt(options.configOptions.get(GrammarOptions.Grammar.BUFFER_SIZE));
-            this.codeMode = Integer.parseInt(options.configOptions.get(GrammarOptions.Grammar.CODE_MODE));
+            this.bufferSize = Integer.parseInt(options.configOptions.get(GrammarOptions.BUFFER_SIZE));
+            this.codeMode = Integer.parseInt(options.configOptions.get(GrammarOptions.CODE_MODE));
             return new MyFileReader();
         } catch (IOException e) {
             Log.logReport("Opening input file stream error.\n");

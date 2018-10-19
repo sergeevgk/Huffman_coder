@@ -1,9 +1,14 @@
 import java.io.*;
 import java.util.*;
 
+import config.GrammarMain;
+import config.GrammarOptions;
+import config.Options;
+
+
 public class HuffmanAlgorithm {
-    private static Map<GrammarMain.Grammar, String> configMain;
-    private Map<GrammarOptions.Grammar, String> configOptions;
+    private static Map<GrammarMain, String> configMain;
+    private Map<GrammarOptions, String> configOptions;
     private Map<Character, Integer> freqTable;
 
     public HuffmanAlgorithm(Options options) {
@@ -13,7 +18,7 @@ public class HuffmanAlgorithm {
     }
 
     public final char[] startProcess(char[] source, Options options) {
-        Integer codeMode = Integer.parseInt(configOptions.get(GrammarOptions.Grammar.CODE_MODE));
+        Integer codeMode = Integer.parseInt(configOptions.get(GrammarOptions.CODE_MODE));
         return processCoder(source, codeMode);
     }
 
@@ -44,7 +49,7 @@ public class HuffmanAlgorithm {
             queue.add(new Node(queue.poll(), queue.poll()));
         }
         Node tree = queue.poll(); // save to extra file
-        tree.writeToFile(configOptions.get(GrammarOptions.Grammar.HUFFMAN_TREE));
+        tree.writeToFile(configOptions.get(GrammarOptions.HUFFMAN_TREE));
         //build table sym-code, (!)save table
         HashMap<Character, String> huffmanTable = buildHuffmanTable(tree);
         return toHuffman(source, huffmanTable).toCharArray();

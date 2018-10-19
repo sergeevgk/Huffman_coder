@@ -1,5 +1,9 @@
 import java.io.*;
 
+import config.Options;
+import config.OptionsReader;
+import log.Log;
+
 public class HuffmanCoder {
     public static void main(String[] args) throws IOException {
         if (args[0] != null) {

@@ -1,8 +1,11 @@
 import java.io.BufferedWriter;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Stack;
+
+import log.Log;
 
 import static com.sun.org.apache.xalan.internal.xsltc.compiler.sym.EOF;
 
@@ -38,7 +41,7 @@ public class Node {
     public Node(String fileName) { //creating tree from file
         // with huffman tree pre-saved
         char c;
-        Stack<Node> st = new Stack<Node>();
+        Deque<Node> st = new ArrayDeque<Node>();
         Scanner scan = new Scanner(fileName);
         while ((c = scan.next().charAt(0)) != EOF) {//!!!
             if (c == '1') {
