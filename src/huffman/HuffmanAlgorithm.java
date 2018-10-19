@@ -15,12 +15,12 @@ public class HuffmanAlgorithm {
         this.huffmanTree = options.huffmanTree;
     }
 
-    public char[] startProcess(char[] source) {
+    public HuffmanAlgorithmResult startProcess(char[] source) {
         int codeMode = Integer.parseInt(configOptions.get(GrammarOptions.CODE_MODE));
         return processCoder(source, codeMode);
     }
 
-    private char[] processCoder(char[] s, int mode) {
+    private HuffmanAlgorithmResult processCoder(char[] s, int mode) {
         switch (mode) {
             case 0:
                 return encode(s);
@@ -42,7 +42,7 @@ public class HuffmanAlgorithm {
         return map;
     }
 
-    private char[] encode(char[] source) {
+    private HuffmanAlgorithmResult encode(char[] source) {
         Map<Character, Integer> frequencyTable = createFreqTable(source);
 
         Queue<Node> queue = new PriorityQueue<>();
@@ -58,11 +58,11 @@ public class HuffmanAlgorithm {
         }
         Node tree = queue.poll();
 
-        Map<Character, String> huffmanTable = buildHuffmanTable(tree);
-        return toHuffman(source, huffmanTable).toCharArray();
+        Map<Character, String> huffmanTree = buildHuffmanTree(tree);
+        return new HuffmanAlgorithmResult(toHuffman(source, huffmanTree).toCharArray(), huffmanTree);
     }
 
-    private HashMap<Character, String> buildHuffmanTable(Node tree) {
+    private HashMap<Character, String> buildHuffmanTree(Node tree) {
         HashMap<Character, String> map = new HashMap<>();
         traverse(tree, "", map);
         return map;
@@ -92,7 +92,7 @@ public class HuffmanAlgorithm {
         return s.toString();
     }
 
-    private char[] decode(char[] source) {
+    private HuffmanAlgorithmResult decode(char[] source) {
         Map<String, Character> codeToCharMap = new HashMap<>();
         for (char key : huffmanTree.keySet()) {
             codeToCharMap.put(huffmanTree.get(key), key);
@@ -106,6 +106,6 @@ public class HuffmanAlgorithm {
                 tempString = new StringBuilder();
             }
         }
-        return decodedString.toString().toCharArray();
+        return new HuffmanAlgorithmResult(decodedString.toString().toCharArray(), huffmanTree);
     }
 }
