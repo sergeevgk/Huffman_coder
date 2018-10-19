@@ -16,7 +16,7 @@ public class OptionsReader {
     public Options readOptions() {
         Map<GrammarMain, String> configMain = new EnumMap<>(GrammarMain.class);
         Map<GrammarOptions, String> configOptions = new EnumMap<>(GrammarOptions.class);
-        Map<Character, Integer> configTable = new HashMap<>();
+        Map<Character, String> huffmanTree = new HashMap<>();
 
         ConfigInterpreter<GrammarMain, String> interpreterMain = new ConfigInterpreterMain(fileName);
         interpreterMain.readConfiguration(configMain);
@@ -26,13 +26,13 @@ public class OptionsReader {
         interpreterOptions.readConfiguration(configOptions);
         fillDefaultOptions(configOptions);
 
-        ConfigInterpreter<Character, Integer> interpreterTable = new ConfigInterpreterTable(configOptions.get(GrammarOptions.FREQUENCY_TABLE));
-        interpreterTable.readConfiguration(configTable);
+        ConfigInterpreter<Character, String> interpreterTable = new ConfigInterpreterHuffmanTree(configOptions.get(GrammarOptions.HUFFMAN_TREE));
+        interpreterTable.readConfiguration(huffmanTree);
 
-        return new Options(configMain, configOptions, configTable);
+        return new Options(configMain, configOptions, huffmanTree);
     }
 
-    private final void fillDefaultMain(Map<GrammarMain, String> configMain) {
+    private void fillDefaultMain(Map<GrammarMain, String> configMain) {
         if (configMain.putIfAbsent(GrammarMain.IN, "input.txt") == null) {
             Log.logReport("Missing input file. Using default one.");
         }
@@ -44,7 +44,7 @@ public class OptionsReader {
         }
     }
 
-    private final void fillDefaultOptions(Map<GrammarOptions, String> configOptions) {
+    private void fillDefaultOptions(Map<GrammarOptions, String> configOptions) {
         if (configOptions.putIfAbsent(GrammarOptions.BUFFER_SIZE, "frequency.txt") == null) {
             Log.logReport("Missing frequency table file. Using default one.");
         }
@@ -54,11 +54,6 @@ public class OptionsReader {
         if (configOptions.putIfAbsent(GrammarOptions.FREQUENCY_TABLE, "frequency.txt") == null) {
             Log.logReport("Missing frequency table file. Using default one.");
         }
-
-    }
-
-    private final void fillDefaultTable(Map<Character, Integer> configTable) { //we can put reading input file & counting
-        //characters here
     }
 }
 
