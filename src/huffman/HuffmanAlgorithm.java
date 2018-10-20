@@ -8,11 +8,11 @@ import config.Options;
 
 public class HuffmanAlgorithm {
     private Map<GrammarOptions, String> configOptions;
-    private Map<Character, String> huffmanTree;
+    private Map<Character, String> huffmanTable;
 
     public HuffmanAlgorithm(Options options) {
         this.configOptions = options.configOptions;
-        this.huffmanTree = options.huffmanTable;
+        this.huffmanTable = options.huffmanTable;
     }
 
     public HuffmanAlgorithmResult startProcess(char[] source) {
@@ -30,57 +30,8 @@ public class HuffmanAlgorithm {
         return null;
     }
 
-    private Map<Character, Integer> createFreqTable(char[] source) {
-        Map<Character, Integer> map = new HashMap<>();
-        for (char ch : source) {
-            if (!map.containsKey(ch)) {
-                map.put(ch, 0);
-            }
-            int value = map.get(ch);
-            map.put(ch, value + 1);
-        }
-        return map;
-    }
-
     private HuffmanAlgorithmResult encode(char[] source) {
-        Map<Character, Integer> frequencyTable = createFreqTable(source);
-        Queue<Node> queue = new PriorityQueue<>();
-        for (char c : frequencyTable.keySet()) {
-            Node n = new Node(c, frequencyTable.get(c), null, null);
-            queue.add(n);
-        }
-
-        while (queue.size() > 1) {
-            Node first = queue.poll();
-            Node second = queue.poll();
-            queue.add(new Node(null, first.getPriority() + second.getPriority(), first, second));
-        }
-        Node tree = queue.poll();
-
-        Map<Character, String> huffmanTree = buildHuffmanTree(tree);
-        return new HuffmanAlgorithmResult(toHuffman(source, huffmanTree).toCharArray(), huffmanTree);
-    }
-
-    private HashMap<Character, String> buildHuffmanTree(Node tree) {
-        HashMap<Character, String> map = new HashMap<>();
-        traverse(tree, "", map);
-        return map;
-    }
-
-    private void traverse(Node tree, String code, Map<Character, String> map) {
-        if (tree == null) {
-            return;
-        }
-        if (tree.isLeaf()) {
-            if (code.isEmpty()) {
-                map.put(tree.getCharacter(), "0");
-            } else {
-                map.put(tree.getCharacter(), code);
-            }
-            return;
-        }
-        traverse(tree.left, code + "0", map);
-        traverse(tree.right, code + "1", map);
+        return new HuffmanAlgorithmResult(toHuffman(source, huffmanTable).toCharArray(), huffmanTable);
     }
 
     private String toHuffman(char[] source, Map<Character, String> huffmanTable) {
@@ -90,13 +41,14 @@ public class HuffmanAlgorithm {
                 break;
             s.append(huffmanTable.get(c));
         }
+        System.out.println(s);
         return s.toString();
     }
 
     private HuffmanAlgorithmResult decode(char[] source) {
         Map<String, Character> codeToCharMap = new HashMap<>();
-        for (char key : huffmanTree.keySet()) {
-            codeToCharMap.put(huffmanTree.get(key), key);
+        for (char key : huffmanTable.keySet()) {
+            codeToCharMap.put(huffmanTable.get(key), key);
         }
         StringBuilder decodedString = new StringBuilder();
         StringBuilder tempString = new StringBuilder();
@@ -107,6 +59,6 @@ public class HuffmanAlgorithm {
                 tempString = new StringBuilder();
             }
         }
-        return new HuffmanAlgorithmResult(decodedString.toString().toCharArray(), huffmanTree);
+        return new HuffmanAlgorithmResult(decodedString.toString().toCharArray(), huffmanTable);
     }
 }

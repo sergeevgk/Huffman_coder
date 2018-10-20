@@ -4,6 +4,7 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
+import huffman.HuffmanTableBuilder;
 import log.Log;
 
 public class OptionsReader {
@@ -28,6 +29,9 @@ public class OptionsReader {
         if (configOptions.get(GrammarOptions.CODE_MODE).equals("1")) {
             ConfigInterpreter<Character, String> interpreterTable = new ConfigInterpreterHuffmanTree(configOptions.get(GrammarOptions.HUFFMAN_TABLE));
             interpreterTable.readConfiguration(huffmanTable);
+        } else if (configOptions.get(GrammarOptions.CODE_MODE).equals("0")) {
+            HuffmanTableBuilder huffmanTableBuilder = new HuffmanTableBuilder(configMain.get(GrammarMain.IN));
+            huffmanTable = huffmanTableBuilder.BuildHuffmanTable();
         }
         return new Options(configMain, configOptions, huffmanTable);
     }

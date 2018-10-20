@@ -4,7 +4,7 @@ import config.Options;
 import config.OptionsReader;
 import huffman.HuffmanAlgorithm;
 import log.Log;
-
+//TODO:  decoder
 public class HuffmanCoder {
     public static void main(String[] args){
         if (args[0] != null) {
