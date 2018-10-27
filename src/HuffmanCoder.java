@@ -3,8 +3,8 @@ import java.io.*;
 import config.Options;
 import config.OptionsReader;
 import huffman.HuffmanAlgorithm;
+import huffman.HuffmanAlgorithmResult;
 import log.Log;
-//TODO:  decoder
 public class HuffmanCoder {
     public static void main(String[] args){
         if (args[0] != null) {
@@ -18,9 +18,12 @@ public class HuffmanCoder {
 
                 MyFileReader fileReader = new MyFileReader(options);
                 MyFileWriter fileWriter = new MyFileWriter(options);
-                char[] buffer;
-                while ((buffer = fileReader.readInputFile()) != null) {
-                    fileWriter.writeOutputFile(algo.startProcess(buffer));
+                byte[] buffer;
+                HuffmanAlgorithmResult res;
+                byte[] extraSymbols = {};
+                while ((buffer = fileReader.readInputFile(extraSymbols)) != null) {
+                    fileWriter.writeOutputFile(res = algo.startProcess(buffer));
+                    extraSymbols = res.getExtra();
                 }
                 fileWriter.close();
                 fileReader.close();
@@ -29,7 +32,7 @@ public class HuffmanCoder {
                     Log.logReport(e.getMessage());
                 else {
                     Log.logReport("Open file error.");
-                }
+                }//return-1
             }
             //log before exit to report about program's work
             Log.logReport("Program finished.");

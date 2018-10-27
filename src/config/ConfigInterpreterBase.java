@@ -24,6 +24,8 @@ public abstract class ConfigInterpreterBase<T, Q> implements ConfigInterpreter<T
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(fileName)))) {
             String line;
             while ((line = reader.readLine()) != null) {
+                if ((line = line.replaceAll("\\s", "")).isEmpty())
+                    continue;
                 String[] set = line.split(DELIMITER);
                 if (set.length != 2) {
                     Log.logReport("Invalid configuration syntax in file: " + fileName);

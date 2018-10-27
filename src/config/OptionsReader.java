@@ -17,7 +17,7 @@ public class OptionsReader {
     public Options readOptions() {
         Map<GrammarMain, String> configMain = new EnumMap<>(GrammarMain.class);
         Map<GrammarOptions, String> configOptions = new EnumMap<>(GrammarOptions.class);
-        Map<Character, String> huffmanTable = new HashMap<>();
+        Map<Byte, String> huffmanTable = new HashMap<>();
 
         ConfigInterpreter<GrammarMain, String> interpreterMain = new ConfigInterpreterMain(fileName);
         interpreterMain.readConfiguration(configMain);
@@ -27,9 +27,14 @@ public class OptionsReader {
         interpreterOptions.readConfiguration(configOptions);
         fillDefaultOptions(configOptions);
         if (configOptions.get(GrammarOptions.CODE_MODE).equals("1")) {
-            ConfigInterpreter<Character, String> interpreterTable = new ConfigInterpreterHuffmanTree(configOptions.get(GrammarOptions.HUFFMAN_TABLE));
+            ConfigInterpreter<Byte, String> interpreterTable = new ConfigInterpreterHuffmanTable(configOptions.get(GrammarOptions.HUFFMAN_TABLE));
             interpreterTable.readConfiguration(huffmanTable);
         } else if (configOptions.get(GrammarOptions.CODE_MODE).equals("0")) {
+            HuffmanTableBuilder huffmanTableBuilder = new HuffmanTableBuilder(configMain.get(GrammarMain.IN));
+            huffmanTable = huffmanTableBuilder.BuildHuffmanTable();
+        }
+        else {
+            Log.logReport("Wrong code mode. Using default - 'encode'");
             HuffmanTableBuilder huffmanTableBuilder = new HuffmanTableBuilder(configMain.get(GrammarMain.IN));
             huffmanTable = huffmanTableBuilder.BuildHuffmanTable();
         }

@@ -3,19 +3,25 @@ package huffman;
 import java.util.Map;
 
 public class HuffmanAlgorithmResult {
-    private char[] result;
-    private Map<Character, String> huffmanTree;
+    private byte[] result;
+    private Map<Byte, String> huffmanTree;
+    private byte[] extraSymbols;
 
-    public HuffmanAlgorithmResult(char[] result, Map<Character, String> huffmanTree) {
+    public HuffmanAlgorithmResult(byte[] result, Map<Byte, String> huffmanTree, byte[] extraSymbols) {
         this.result = result;
         this.huffmanTree = huffmanTree;
+        this.extraSymbols = extraSymbols;
     }
 
-    public Map<Character, String> getHuffmanTree() {
+    public Map<Byte, String> getHuffmanTree() {
         return huffmanTree;
     }
 
-    public char[] getResult() {
+    public byte[] getResult() {
         return result;
+    }
+
+    public byte[] getExtra(){
+        return extraSymbols;
     }
 }

@@ -2,23 +2,20 @@ package huffman;
 
 import log.Log;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.*;
 
 public class HuffmanTableBuilder {
-    public Map<Character, Integer> frequencyTable = new HashMap<>();
+    public Map<Byte, Integer> frequencyTable = new HashMap<>();
     private String inputFileName;
 
     public HuffmanTableBuilder(String inputFileName) {
         this.inputFileName = inputFileName;
     }
 
-    private Map<Character, Integer> createFreqTable(char[] source) {
-        Map<Character, Integer> map = new HashMap<>();
-        for (char ch : source) {
+    private Map<Byte, Integer> createFreqTable(byte[] source) {
+        Map<Byte, Integer> map = new HashMap<>();
+        for (byte ch : source) {
             if (!map.containsKey(ch)) {
                 map.put(ch, 0);
             }
@@ -27,23 +24,22 @@ public class HuffmanTableBuilder {
         }
         return map;
     }
-    public Map<Character, String> BuildHuffmanTable(){
-        int b;
+    public Map<Byte, String> BuildHuffmanTable(){
         try {
             FileInputStream inStream = new FileInputStream(inputFileName);
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
-            Integer count;
-            char c;
-            while ((b = reader.read()) != -1) {
-                count = frequencyTable.get(c = (char) b);
-                if (!frequencyTable.containsKey(c)) {
-                    frequencyTable.put((char)b, 0);
+            BufferedInputStream reader = new BufferedInputStream(inStream);
+            int c;
+            byte b;
+            while ((c = reader.read()) != -1) {
+                b = (byte)c;
+                if (!frequencyTable.containsKey(b)) {
+                    frequencyTable.put(b, 0);
                 }
-                int value = frequencyTable.get(c);
-                frequencyTable.put(c, value + 1);
+                int value = frequencyTable.get(b);
+                frequencyTable.put(b, value + 1);
             }
             Queue<Node> queue = new PriorityQueue<>();
-            for (char ch : frequencyTable.keySet()) {
+            for (byte ch : frequencyTable.keySet()) {
                 Node n = new Node(ch, frequencyTable.get(ch), null, null);
                 queue.add(n);
             }
@@ -61,21 +57,21 @@ public class HuffmanTableBuilder {
             return null;
         }
     }
-    private HashMap<Character, String> buildHuffmanTable(Node tree) {
-        HashMap<Character, String> map = new HashMap<>();
+    private HashMap<Byte, String> buildHuffmanTable(Node tree) {
+        HashMap<Byte, String> map = new HashMap<>();
         traverse(tree, "", map);
         return map;
     }
 
-    private void traverse(Node tree, String code, Map<Character, String> map) {
+    private void traverse(Node tree, String code, Map<Byte, String> map) {
         if (tree == null) {
             return;
         }
         if (tree.isLeaf()) {
             if (code.isEmpty()) {
-                map.put(tree.getCharacter(), "0");
+                map.put(tree.getByte(), "0");
             } else {
-                map.put(tree.getCharacter(), code);
+                map.put(tree.getByte(), code);
             }
             return;
         }

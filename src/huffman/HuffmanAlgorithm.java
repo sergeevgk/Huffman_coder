@@ -8,19 +8,19 @@ import config.Options;
 
 public class HuffmanAlgorithm {
     private Map<GrammarOptions, String> configOptions;
-    private Map<Character, String> huffmanTable;
+    private Map<Byte, String> huffmanTable;
 
     public HuffmanAlgorithm(Options options) {
         this.configOptions = options.configOptions;
         this.huffmanTable = options.huffmanTable;
     }
 
-    public HuffmanAlgorithmResult startProcess(char[] source) {
+    public HuffmanAlgorithmResult startProcess(byte[] source) {
         int codeMode = Integer.parseInt(configOptions.get(GrammarOptions.CODE_MODE));
         return processCoder(source, codeMode);
     }
 
-    private HuffmanAlgorithmResult processCoder(char[] s, int mode) {
+    private HuffmanAlgorithmResult processCoder(byte[] s, int mode) {
         switch (mode) {
             case 0:
                 return encode(s);
@@ -30,35 +30,63 @@ public class HuffmanAlgorithm {
         return null;
     }
 
-    private HuffmanAlgorithmResult encode(char[] source) {
-        return new HuffmanAlgorithmResult(toHuffman(source, huffmanTable).toCharArray(), huffmanTable);
+    private HuffmanAlgorithmResult encode(byte[] source) {
+        byte a[] = {};
+        return new HuffmanAlgorithmResult(toHuffman(source, huffmanTable).getBytes(), huffmanTable, a);
     }
 
-    private String toHuffman(char[] source, Map<Character, String> huffmanTable) {
+    private String toHuffman(byte[] source, Map<Byte, String> huffmanTable) {
         StringBuilder s = new StringBuilder();
-        for (char c : source) {
-            if (c == 0)
-                break;
+        for (byte c : source) {
+            /*if (c == 0)
+                break;*/
             s.append(huffmanTable.get(c));
         }
         System.out.println(s);
         return s.toString();
     }
 
-    private HuffmanAlgorithmResult decode(char[] source) {
-        Map<String, Character> codeToCharMap = new HashMap<>();
-        for (char key : huffmanTable.keySet()) {
-            codeToCharMap.put(huffmanTable.get(key), key);
+    private HuffmanAlgorithmResult decode(byte[] source) {
+        Map<String, Byte> codeToCharMap = new HashMap<>();
+        int maxCodeLength = 1;
+        String temp;
+        ArrayList <Byte> exSym = new ArrayList<>();
+        ArrayList <Byte> decSym = new ArrayList<>();
+        for (byte key : huffmanTable.keySet()) {
+            codeToCharMap.put(temp = huffmanTable.get(key), key);
+            if (maxCodeLength < temp.length())
+                maxCodeLength = temp.length();
         }
-        StringBuilder decodedString = new StringBuilder();
         StringBuilder tempString = new StringBuilder();
-        for (char ch : source) {
-            tempString.append(ch);
+        int currentIndex = 0;
+        for (byte ch : source) {
+            tempString.append((char)ch);
+            currentIndex += 1;
             if (codeToCharMap.containsKey(tempString.toString())) {
-                decodedString.append(codeToCharMap.get(tempString.toString()));
+                decSym.add(codeToCharMap.get(tempString.toString()));
                 tempString = new StringBuilder();
+                if (source.length - currentIndex < maxCodeLength) {
+                    while (source.length - currentIndex < maxCodeLength && source.length - currentIndex  > 0) {
+                        exSym.add(source[currentIndex]);
+                        currentIndex += 1;
+                    }
+                    break;
+                }
             }
         }
-        return new HuffmanAlgorithmResult(decodedString.toString().toCharArray(), huffmanTable);
+        byte[] extraSymbols = convertToPrimitive(exSym);
+        byte[] decodedSymbols = convertToPrimitive(decSym);
+        return new HuffmanAlgorithmResult(decodedSymbols, huffmanTable, extraSymbols);
+    }
+    private byte[] convertToPrimitive(ArrayList<Byte> list){
+        byte[] array = new byte[list.size()];
+        Byte[] Array = list.toArray(new Byte[list.size()]);
+        int index = 0;
+        for (Byte B: Array){
+            array[index] = Array[index];
+            index += 1;
+        }
+        return array;
     }
 }
+

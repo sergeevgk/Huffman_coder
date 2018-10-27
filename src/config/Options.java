@@ -5,11 +5,11 @@ import java.util.Map;
 public class Options {
     public Map<GrammarMain, String> configMain;
     public Map<GrammarOptions, String> configOptions;
-    public Map<Character, String> huffmanTable;
+    public Map<Byte, String> huffmanTable;
 
     public Options(Map<GrammarMain, String> configMain,
                    Map<GrammarOptions, String> configOptions,
-                   Map<Character, String> huffmanTable) {
+                   Map<Byte, String> huffmanTable) {
         this.configMain = configMain;
         this.configOptions = configOptions;
         this.huffmanTable = huffmanTable;
