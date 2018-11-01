@@ -48,16 +48,17 @@ public class HuffmanAlgorithm {
 
     private HuffmanAlgorithmResult decode(byte[] source) {
         Map<String, Byte> codeToCharMap = new HashMap<>();
-        int maxCodeLength = 1;
         String temp;
+        int maxBufferSize = Integer.parseInt(configOptions.get(GrammarOptions.BUFFER_SIZE));
         ArrayList <Byte> exSym = new ArrayList<>();
         ArrayList <Byte> decSym = new ArrayList<>();
+        StringBuilder tempString = new StringBuilder();
+        int maxCodeLength = 1;
         for (byte key : huffmanTable.keySet()) {
             codeToCharMap.put(temp = huffmanTable.get(key), key);
             if (maxCodeLength < temp.length())
                 maxCodeLength = temp.length();
         }
-        StringBuilder tempString = new StringBuilder();
         int currentIndex = 0;
         for (byte ch : source) {
             tempString.append((char)ch);
@@ -65,7 +66,7 @@ public class HuffmanAlgorithm {
             if (codeToCharMap.containsKey(tempString.toString())) {
                 decSym.add(codeToCharMap.get(tempString.toString()));
                 tempString = new StringBuilder();
-                if (source.length - currentIndex < maxCodeLength) {
+                if (maxBufferSize - currentIndex < maxCodeLength && maxBufferSize - currentIndex > 0) {
                     while (source.length - currentIndex < maxCodeLength && source.length - currentIndex  > 0) {
                         exSym.add(source[currentIndex]);
                         currentIndex += 1;

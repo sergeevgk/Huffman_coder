@@ -16,11 +16,12 @@ public class MyFileWriter {
     public MyFileWriter(Options options) throws IOException {
         FileOutputStream outStreamResult = new FileOutputStream(options.configMain.get(GrammarMain.OUT));
         this.writerResult = new BufferedOutputStream(outStreamResult);
-        if (options.configOptions.get(GrammarOptions.HUFFMAN_TABLE) != null) {
+        codeMode = options.configOptions.get(GrammarOptions.CODE_MODE);
+        if (options.configOptions.get(GrammarOptions.HUFFMAN_TABLE) != null && codeMode.equals("0")) {
             FileOutputStream outStreamTree = new FileOutputStream(options.configOptions.get(GrammarOptions.HUFFMAN_TABLE));
             this.writerTree = new BufferedOutputStream(outStreamTree);
         }
-        codeMode = options.configOptions.get(GrammarOptions.CODE_MODE);
+
         treeWritten = false;
     }
 
@@ -50,7 +51,8 @@ public class MyFileWriter {
     public final void close() {
         try {
             writerResult.close();
-            writerTree.close();
+            if (codeMode.equals("0"))
+                writerTree.close();
         } catch (IOException e) {
 
         }
